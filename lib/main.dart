@@ -43,13 +43,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _theNumber = Random().nextInt(10);
-  double _maxNumber = 10;
-  double _sliderValue = 1;
+  int _maxNumber = 10;
+  int _sliderValue = 1;
+  List<int> randomToGuess = [for (int i = 1; i <= 7; i++) Random().nextInt(pow(10, i).toInt())];
 
-  void _resetTheNumber() {
+  void resetRandomToGuess() {
     setState(() {
-      _theNumber = Random().nextInt(_maxNumber.toInt());
+      randomToGuess = randomToGuess = [for (int i = 1; i <= 7; i++) Random().nextInt(pow(10, i).toInt())];
     });
   }
 
@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 20),
             Slider(
-              value: _sliderValue,
+              value: _sliderValue.toDouble(),
               min: 1,
               max: 7,
               divisions: 6,
@@ -77,9 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
               onChanged: (value) {
                 setState(
                   () {
-                    _sliderValue = value;
-                    _maxNumber = pow(10, _sliderValue).toDouble();
-                    _theNumber = Random().nextInt(_maxNumber.toInt());
+                    _sliderValue = value.toInt();
+                    _maxNumber = pow(10, _sliderValue).toInt();
                   },
                 );
               },
@@ -88,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'The random number is:',
             ),
             Text(
-              '$_theNumber',
+              '${randomToGuess[_sliderValue - 1]}',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
@@ -96,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: _resetTheNumber,
+        onPressed: resetRandomToGuess,
         tooltip: 'Increment',
         child: const Icon(Icons.start_sharp),
       ),
